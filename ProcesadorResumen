@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class ProcesadorResumen {
+
+    // Función para generar el resumen de los términos y condiciones
+    public static String generarResumen(String texto) {
+        if (texto.isEmpty()) {
+            return "No se ingresaron términos y condiciones.";
+        }
+
+        // Dividir el texto en oraciones utilizando ".", "!", o "?"
+        String[] oraciones = texto.split("(?<=[.!?])\\s*");
+
+        // Calcular puntuaciones para cada oración (longitud y posición)
+        Map<Integer, Double> puntuaciones = new HashMap<>();
+        for (int i = 0; i < oraciones.length; i++) {
+            String oracion = oraciones[i];
+            double puntuacion = calcularPuntuacion(oracion, i, oraciones.length);
+            puntuaciones.put(i, puntuacion);
+        }
+
+        // Ordenar índices por puntuación de mayor a menor
+        List<Map.Entry<Integer, Double>> listaOrdenada = new ArrayList<>(puntuaciones.entrySet());
+        listaOrdenada.sort((o1, o2) -> Double.compare(o2.getValue(), o1.getValue()));
+
+        // Obtener los índices de las oraciones más relevantes
+        int limite = Math.min(5, listaOrdenada.size());
+        Set<Integer> indicesSeleccionados = new TreeSet<>(); // TreeSet para mantener orden
+        for (int i = 0; i < limite; i++) {
+            indicesSeleccionados.add(listaOrdenada.get(i).getKey());
+        }
+
+        // Construir el resumen ordenado
+        StringBuilder resumen = new StringBuilder();
+        for (int indice : indicesSeleccionados) {
+            resumen.append("- ").append(oraciones[indice].trim()).append("\n");
+        }
+
+        return resumen.toString().trim();
+    }
+
+    // Calcular la puntuación de una oración basada en longitud y posición
+    private static double calcularPuntuacion(String oracion, int indice, int totalOraciones) {
+        // Ponderar longitud (preferir oraciones intermedias en tamaño)
+        int longitud = oracion.length();
+        double longitudScore = (longitud > 50 && longitud < 150) ? 1.0 : 0.5;
+
+        // Ponderar posición (dar más peso a las primeras oraciones)
+        double posicionScore = 1.0 - ((double) indice / totalOraciones);
+
+        return longitudScore + posicionScore;
+    }
+}
