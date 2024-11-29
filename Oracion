@@ -1,0 +1,17 @@
+public class Oracion {
+    private String texto;
+    private int puntuacion;
+
+    public Oracion(String texto, int puntuacion) {
+        this.texto = texto;
+        this.puntuacion = puntuacion;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+}
