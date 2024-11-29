@@ -1,0 +1,3 @@
+public class Configuracion {
+    public static final int MAX_ORACIONES = 5; // Número máximo de oraciones en el resumen
+}
