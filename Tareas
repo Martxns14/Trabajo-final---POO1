@@ -1,0 +1,10 @@
+public class Tareas {
+
+    public static boolean validarTexto(String texto) {
+        return texto != null && !texto.trim().isEmpty();
+    }
+
+    public static String preprocesarTexto(String texto) {
+        return texto.replaceAll("\\s+", " ").trim(); // Elimina espacios adicionales
+    }
+}
