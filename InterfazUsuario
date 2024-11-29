@@ -1,0 +1,64 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
+
+public class InterfazUsuario {
+    private Frame ventana;
+    private TextArea areaTexto;
+    private Button procesarButton;
+    private TextArea resumenArea;
+    private ProcesadorResumen procesador;
+
+    public InterfazUsuario() {
+        // Crear el procesador de resumen
+        procesador = new ProcesadorResumen();
+
+        // Crear la ventana principal
+        ventana = new Frame("Simplificador de Términos y Condiciones");
+
+        // Crear el área de texto para ingresar los términos y condiciones
+        areaTexto = new TextArea();
+        areaTexto.setBounds(20, 50, 360, 100);
+
+        // Crear el botón para procesar el texto
+        procesarButton = new Button("Generar Resumen");
+        procesarButton.setBounds(20, 160, 150, 30);
+        procesarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto = areaTexto.getText();
+                List<String> resumen = procesador.generarResumen(texto);
+                resumenArea.setText(String.join("\n", resumen));
+            }
+        });
+
+        // Crear el área de texto para mostrar el resumen
+        resumenArea = new TextArea();
+        resumenArea.setBounds(20, 200, 360, 100);
+        resumenArea.setEditable(false);
+
+        // Configurar el layout de la ventana
+        ventana.setLayout(null);
+        ventana.setSize(400, 350);
+        ventana.add(areaTexto);
+        ventana.add(procesarButton);
+        ventana.add(resumenArea);
+
+        // Configurar el comportamiento de cierre de la ventana
+        ventana.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                ventana.dispose();  // Cierra la ventana
+            }
+        });
+
+        // Hacer la ventana visible
+        ventana.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        // Ejecutar la aplicación
+        new InterfazUsuario();
+    }
+}
