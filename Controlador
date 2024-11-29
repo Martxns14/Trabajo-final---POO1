@@ -1,0 +1,13 @@
+public class Controlador {
+    private InterfazUsuario vista;
+    private ProcesadorResumen modelo;
+
+    public Controlador() {
+        vista = new InterfazUsuario();
+        modelo = new ProcesadorResumen();
+    }
+
+    public static void main(String[] args) {
+        new Controlador(); // Inicia la aplicación
+    }
+}
