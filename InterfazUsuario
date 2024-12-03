@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-import java.util.ArrayList;
 
 public class InterfazUsuario {
     private Frame ventana;
@@ -19,14 +18,14 @@ public class InterfazUsuario {
 
         // Crear el área de texto para ingresar los términos y condiciones
         areaTexto = new TextArea();
-        areaTexto.setBounds(20, 50, 360, 100);
+        areaTexto.setEditable(true);
 
         // Crear el botón para procesar el texto
         procesarButton = new Button("Generar Resumen");
-        procesarButton.setBounds(20, 160, 150, 30);
         procesarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Obtener el texto del área de entrada y generar el resumen
                 String texto = areaTexto.getText();
                 List<String> resumen = procesador.generarResumen(texto);
                 resumenArea.setText(String.join("\n", resumen));
@@ -35,17 +34,33 @@ public class InterfazUsuario {
 
         // Crear el área de texto para mostrar el resumen
         resumenArea = new TextArea();
-        resumenArea.setBounds(20, 200, 360, 100);
-        resumenArea.setEditable(false);
+        resumenArea.setEditable(false); // Solo lectura
 
-        // Configurar el layout de la ventana
-        ventana.setLayout(null);
-        ventana.setSize(400, 350);
-        ventana.add(areaTexto);
-        ventana.add(procesarButton);
-        ventana.add(resumenArea);
+        // Configurar el layout principal
+        ventana.setLayout(new BorderLayout());
 
-        // Configurar el comportamiento de cierre de la ventana
+        // Panel superior para texto de entrada y botón
+        Panel panelEntrada = new Panel(new BorderLayout());
+        panelEntrada.add(new Label("Ingrese el texto:"), BorderLayout.NORTH);
+        panelEntrada.add(areaTexto, BorderLayout.CENTER);
+        panelEntrada.add(procesarButton, BorderLayout.SOUTH);
+
+        // Panel central para el resumen
+        Panel panelResumen = new Panel(new BorderLayout());
+        panelResumen.add(new Label("Resumen Generado:"), BorderLayout.NORTH);
+        panelResumen.add(resumenArea, BorderLayout.CENTER);
+
+        // Agregar los paneles a la ventana
+        ventana.add(panelEntrada, BorderLayout.NORTH);
+        ventana.add(panelResumen, BorderLayout.CENTER);
+
+        // Permitir redimensionar la ventana
+        ventana.setResizable(true);
+
+        // Configurar el tamaño inicial de la ventana
+        ventana.setSize(600, 400);
+
+        // Configurar el comportamiento de cierre
         ventana.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
